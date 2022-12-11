@@ -17,12 +17,12 @@ contract SubscriptionContract is Ownable {
         setSubscriptionPrice(_subscriptionPrice);
     }
 
-    function subscribe() public payable checkSubScriptionRequest {
+    function subscribe(uint256 _subscriptionPeriod) public payable  {
+        require( msg.value == _subscriptionPeriod * subscriptionPrice, "please send the exact subscription price amount");
         usersPayment[_msgSender()].paymentStartTime = block.timestamp;
-        usersPayment[_msgSender()].paymentExpireTime =
-            block.timestamp +
-            30 days;
+        usersPayment[_msgSender()].paymentExpireTime = block.timestamp +_subscriptionPeriod * 30 days;
     }
+
 
     function paymentsInSmartContract() public view returns (uint256) {
         return address(this).balance;
@@ -35,15 +35,6 @@ contract SubscriptionContract is Ownable {
 
     function setSubscriptionPrice(uint256 _newPrice) public onlyOwner {
         subscriptionPrice = _newPrice;
-    }
-
-    //modifiers
-    modifier checkSubScriptionRequest() {
-        require(
-            msg.value == subscriptionPrice,
-            "please send the exact subscription price amount"
-        );
-        _;
     }
 
 }
