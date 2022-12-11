@@ -42,20 +42,4 @@ contract SubscriptionContract is Ownable {
         subscriptionPrice = _newPrice;
     }
 
-    //modifiers
-    modifier checkSubScriptionRequest() {
-        require(
-            msg.value == subscriptionPrice,
-            "please send the exact subscription price amount"
-        );
-        _;
-    }
-
-    modifier userPaid() {
-        require(
-            block.timestamp < usersPayment[_msgSender()].paymentExpireTime,
-            "Your subscription expired!"
-        );
-        _;
-    }
 }
