@@ -17,12 +17,17 @@ contract SubscriptionContract is Ownable {
         setSubscriptionPrice(_subscriptionPrice);
     }
 
-    function subscribe(uint256 _subscriptionPeriod) public payable  {
-        require( msg.value == _subscriptionPeriod * subscriptionPrice, "please send the exact subscription price amount");
+    function subscribe(uint256 _subscriptionPeriod) public payable {
+        require(
+            msg.value == _subscriptionPeriod * subscriptionPrice,
+            "please send the exact subscription price amount"
+        );
         usersPayment[_msgSender()].paymentStartTime = block.timestamp;
-        usersPayment[_msgSender()].paymentExpireTime = block.timestamp +_subscriptionPeriod * 30 days;
+        usersPayment[_msgSender()].paymentExpireTime =
+            block.timestamp +
+            _subscriptionPeriod *
+            30 days;
     }
-
 
     function paymentsInSmartContract() public view returns (uint256) {
         return address(this).balance;
@@ -37,4 +42,20 @@ contract SubscriptionContract is Ownable {
         subscriptionPrice = _newPrice;
     }
 
+    //modifiers
+    modifier checkSubScriptionRequest() {
+        require(
+            msg.value == subscriptionPrice,
+            "please send the exact subscription price amount"
+        );
+        _;
+    }
+
+    modifier userPaid() {
+        require(
+            block.timestamp < usersPayment[_msgSender()].paymentExpireTime,
+            "Your subscription expired!"
+        );
+        _;
+    }
 }
