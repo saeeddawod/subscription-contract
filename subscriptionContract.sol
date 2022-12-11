@@ -20,7 +20,7 @@ contract SubscriptionContract is Ownable {
     function subscribe(uint256 _subscriptionPeriod) public payable {
         require(
             msg.value == _subscriptionPeriod * subscriptionPrice,
-            "please send the exact subscription price amount"
+            "please send the exact subscription cost"
         );
         usersPayment[_msgSender()].paymentStartTime = block.timestamp;
         usersPayment[_msgSender()].paymentExpireTime =
