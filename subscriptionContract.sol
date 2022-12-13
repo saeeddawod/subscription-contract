@@ -4,13 +4,14 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SubscriptionContract is Ownable {
+
     struct payments {
         uint256 paymentStartTime;
         uint256 paymentExpireTime;
     }
-
+    
     mapping(address => payments) public usersPayment;
-
+    
     uint256 public subscriptionPrice;
 
     constructor(uint256 _subscriptionPrice) {
