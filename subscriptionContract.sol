@@ -43,9 +43,9 @@ contract SubscriptionContract is Ownable {
         subscriptionPrice = _newPrice;
     }
 
-    function subscriptionActivityStatus() public view returns (bool) {
+    function subscriptionActivityStatus(address _addressTocheck) public view returns (bool) {
         require(
-            block.timestamp > usersPayment[_msgSender()].paymentExpirationTime,
+            block.timestamp < usersPayment[_addressTocheck].paymentExpirationTime,
             "Your subscription expired!"
         ); 
         return true ;
